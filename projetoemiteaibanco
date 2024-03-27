@@ -1,0 +1,27 @@
+CREATE TABLE Pedido (
+    id SERIAL PRIMARY KEY,
+    numero_sequencial INT NOT NULL,
+    total DECIMAL(10, 2) NOT NULL,
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Produto (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    preco DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE Pedido_Produto (
+    id SERIAL PRIMARY KEY,
+    pedido_id INT REFERENCES Pedido(id),
+    produto_id INT REFERENCES Produto(id),
+    quantidade INT NOT NULL,
+	preco_total INT NOT NULL,
+    CONSTRAINT fk_pedido FOREIGN KEY (pedido_id) REFERENCES Pedido(id),
+    CONSTRAINT fk_produto FOREIGN KEY (produto_id) REFERENCES Produto(id),
+    CONSTRAINT chk_quantidade CHECK (quantidade >= 1 AND quantidade <= +3)
+);
+
+INSERT INTO Produto (nome, preco) VALUES ('Camisa', 100.00);
+INSERT INTO Produto (nome, preco) VALUES ('Calça', 200.00);
+INSERT INTO Produto (nome, preco) VALUES ('jaqueta', 300.00);
